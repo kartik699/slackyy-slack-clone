@@ -42,6 +42,7 @@ export const useCreateWorkspace = () => {
 
                 const response = await mutation(values);
                 setStatus("success");
+                setData(response);
                 options?.onSuccess?.(response);
                 return response;
             } catch (error) {
