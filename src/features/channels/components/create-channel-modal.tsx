@@ -1,10 +1,10 @@
 import { toast } from "sonner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -17,6 +17,7 @@ import { useCreateChannelModal } from "../store/use-create-channel-modal";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export const CreateChannelModal = () => {
+    const router = useRouter();
     const workspaceId = useWorkspaceId();
 
     const { mutate, isPending } = useCreateChannel();
@@ -41,12 +42,12 @@ export const CreateChannelModal = () => {
             { name, workspaceId },
             {
                 onSuccess: (id) => {
-                    // TODO: redirect to new channel
                     toast.success(`Channel ${name} created!`);
                     handleClose();
+                    router.push(`/workspace/${workspaceId}/channel/${id}`);
                 },
-                onError: (error) => {
-                    toast.error("Failed to create channel - " + error.message);
+                onError: () => {
+                    toast.error("Failed to create channel");
                 },
             },
         );
