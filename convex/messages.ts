@@ -24,7 +24,7 @@ export const create = mutation({
         workspaceId: v.id("workspaces"),
         channelId: v.optional(v.id("channels")),
         parentMessageId: v.optional(v.id("messages")),
-        //TODO: Add conversation id
+        conversationId: v.optional(v.id("conversations")),
     },
     handler: async (ctx, args) => {
         const userId = await getAuthUserId(ctx);
@@ -35,6 +35,19 @@ export const create = mutation({
 
         if (!member) throw new Error("Unauthorized!");
 
+        let _conversationId = args.conversationId;
+
+        // only possible if we are replying in a thread in 1:1 conversations
+        if (!args.conversationId && !args.channelId && args.parentMessageId) {
+            const parentMessage = await ctx.db.get(args.parentMessageId);
+
+            if (!parentMessage) {
+                throw new Error("Parent message not found!");
+            }
+
+            _conversationId = parentMessage.conversationId;
+        }
+
         const messageId = await ctx.db.insert("messages", {
             body: args.body,
             memberId: member._id,
@@ -42,6 +55,7 @@ export const create = mutation({
             channelId: args.channelId,
             image: args.image,
             parentMessageId: args.parentMessageId,
+            conversationId: _conversationId,
             updatedAt: Date.now(),
         });
 
