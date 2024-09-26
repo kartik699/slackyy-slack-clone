@@ -106,9 +106,9 @@ export const get = query({
 
         return {
             ...results,
-            page: await Promise.all(
-                results.page
-                    .map(async (message) => {
+            page: (
+                await Promise.all(
+                    results.page.map(async (message) => {
                         const member = await populateMember(
                             ctx,
                             message.memberId,
@@ -184,9 +184,9 @@ export const get = query({
                             threadImage: thread.image,
                             threadTimestamp: thread.timestamp,
                         };
-                    })
-                    .filter((message) => message != null),
-            ),
+                    }),
+                )
+            ).filter((message) => message !== null),
         };
     },
 });
