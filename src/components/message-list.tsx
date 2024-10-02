@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Loader } from "lucide-react";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
 
 import { useCurrentMember } from "@/features/members/api/use-current-member";
@@ -10,7 +11,6 @@ import { Message } from "./message";
 import { ChannelHero } from "./channel-hero";
 
 import { Id } from "../../convex/_generated/dataModel";
-import { Loader } from "lucide-react";
 
 const TIME_THRESHOLD = 5;
 
