@@ -11,6 +11,7 @@ import {
 import { usePanel } from "@/hooks/use-panel";
 
 import { Thread } from "@/features/messages/components/thread";
+import { Profile } from "@/features/members/components/profile";
 
 import { Sidebar } from "./sidebar";
 import { Toolbar } from "./toolbar";
@@ -23,9 +24,9 @@ interface WorkspaceIdLayoutProps {
 }
 
 const WorkspaceIdLayout = ({ children }: Readonly<WorkspaceIdLayoutProps>) => {
-    const { parentMessageId, onClose } = usePanel();
+    const { parentMessageId, profileMemberId, onClose } = usePanel();
 
-    const showPanel = !!parentMessageId;
+    const showPanel = !!parentMessageId || !!profileMemberId;
 
     return (
         <div>
@@ -53,6 +54,13 @@ const WorkspaceIdLayout = ({ children }: Readonly<WorkspaceIdLayoutProps>) => {
                                     <Thread
                                         messageId={
                                             parentMessageId as Id<"messages">
+                                        }
+                                        onClose={onClose}
+                                    />
+                                ) : profileMemberId ? (
+                                    <Profile
+                                        memberId={
+                                            profileMemberId as Id<"members">
                                         }
                                         onClose={onClose}
                                     />
