@@ -57,6 +57,7 @@ export const Toolbar = () => {
                         <CommandGroup heading="Channels">
                             {channels?.map((channel) => (
                                 <CommandItem
+                                    key={channel._id}
                                     onSelect={() => setOpen(false)}
                                     className="cursor-pointer"
                                     asChild
@@ -73,6 +74,7 @@ export const Toolbar = () => {
                         <CommandGroup heading="Members">
                             {members?.map((member) => (
                                 <CommandItem
+                                    key={member._id}
                                     onSelect={() => setOpen(false)}
                                     className="cursor-pointer"
                                     asChild
